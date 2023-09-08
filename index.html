@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <style>
+        :root {
+            --item-width: 256px;
+            --item-height: 35px;
+        }
+        body, html {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: sans-serif;
+
+        }
+        body > * {
+            margin-bottom: 1em;
+            /* transition: width 0.2s; */
+        }
+        #result_tag {
+            text-align: center;
+        }
+        #birthdate {
+            box-sizing: content-box;
+            width: var(--item-width);
+            height: var(--item-height);
+            border-radius: 10px;
+            padding: 0;
+            background-color: transparent;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        #birthdate:focus {
+            outline: none;
+        }
+        .submit_button {
+            box-sizing: content-box;
+            padding: 0;
+            width: var(--item-width);
+            height: var(--item-height);
+            border: none;
+            display: block;
+            border-radius: 10px;
+            transition: background-color 0.2s, color 0.2s;
+            border: 2px solid transparent;
+            background-color: transparent;
+        }
+        #shhhhhh_tag {
+            opacity: 0;
+            text-align: center;
+            z-index: -999;
+            pointer-events: none;
+            height: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        @media (prefers-color-scheme: light) {
+            body {
+                background-color: white;
+                color: black;
+            }
+            #birthdate { 
+                border: 2px solid black;
+            }
+            #birthdate:hover {
+                background-color: black;
+                color: white;
+            }
+            .submit_button {
+                border: 2px solid black;
+                transition: background-color 0.2s, color 0.2s;
+            }
+            .submit_button:hover {
+                background-color: black;
+                color: white;
+            }
+        }
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: black;
+                color: white;
+            }
+            body > * {
+                color: white;
+            }
+            #birthdate { 
+                border: 2px solid white;
+            }
+            #birthdate:hover {
+                background-color: white;
+                color: black;
+            }
+            .submit_button {
+                border: 2px solid white;
+                transition: background-color 0.2s, color 0.2s;
+            }
+            .submit_button:hover {
+                background-color: white;
+                color: black;
+            }
+        }
+    </style>
+</head>
+<body onload="fix_buttons()">
+    <p id="result_tag">enter your birthday and click submit!</p>
+    <p id="shhhhhh_tag">enter your birthday and click submit!</p>
+    <input type="date" id="birthdate" name="birthdate" value="1999-12-15"/>
+
+    </textarea>
+    <button onclick="calc_age()" class="submit_button">submit</button>
+</body>
+
+<script>
+
+    function epochToFormattedDate(epochTime) {
+        const date = new Date(epochTime);
+
+        const monthNames = [
+            "January", "February", "March", "April", "May", "June", "July",
+            "August", "September", "October", "November", "December"
+        ];
+
+        const daySuffixes = ["st", "nd", "rd"];
+
+        const day = date.getDate();
+        const month = date.getMonth();
+        const year = date.getFullYear();
+
+        let daySuffix = "th";
+        if (day >= 1 && day <= 3) {
+            daySuffix = daySuffixes[day - 1];
+        }
+
+        const formattedDate = `${monthNames[month]} ${day}${daySuffix}, ${year}`;
+
+        return formattedDate;
+    }
+
+    function calc_age() {
+        var birthdate = document.getElementById('birthdate')
+        var base_epoch = new Date(birthdate.value).getTime() 
+        // console.log(base_epoch)
+        var w38 = base_epoch - 22982400 * 1000
+        var w42 = base_epoch - 25401600 * 1000
+
+        var result_text = `You were concieved sometime between ${epochToFormattedDate(w38)} and ${epochToFormattedDate(w42)}!`
+
+        document.getElementById('result_tag').innerText = result_text
+
+    }
+    function fix_buttons() { document.documentElement.style.setProperty('--item-width', document.getElementById('shhhhhh_tag').offsetWidth+'px') }
+    window.addEventListener("resize", fix_buttons);
+</script>
